@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Navbar, Nav, Container, Image, Button, Modal } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 
 function TopNavbar() {
   const { logout, user } = useContext(AuthContext);
