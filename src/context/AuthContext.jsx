@@ -1,8 +1,8 @@
-// src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
+const BASE_URL = "https://college-management-backend-2.onrender.com/api"; // ✅ ADDED
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,11 +12,9 @@ export const AuthProvider = ({ children }) => {
     if (storedUser) setUser(storedUser);
   }, []);
 
-
-
   const login = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/login", {
+      const response = await axios.post(`${BASE_URL}/auth/login`, { // ✅ UPDATED
         email,
         password,
       });
@@ -38,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
-
         switch (status) {
           case 400:
             console.error("❌ Bad Request:", data?.message || "Invalid credentials.");
@@ -67,19 +64,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("authUser");
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, email: user?.email, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
+}
 
 
 export default AuthContext;

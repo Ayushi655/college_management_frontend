@@ -1,7 +1,8 @@
 // src/services/authService.js
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/auth";
+// ✅ Use your deployed Render backend
+const API_BASE = "https://college-management-backend-2.onrender.com/api/auth";
 
 export const registerUser = async(email, password, role) => {
     const allowedRoles = ["student", "teacher"];
