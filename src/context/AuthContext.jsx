@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
-const BASE_URL = "https://college-management-backend-2.onrender.com/api"; // ✅ ADDED
+const BASE_URL = "https://college-management-backend-2.onrender.com/api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -14,25 +14,18 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, { // ✅ UPDATED
+      const response = await axios.post(`${BASE_URL}/auth/login`, {
         email,
         password,
       });
 
-      switch (response.status) {
-        case 200:
-          console.log("✅ Login successful");
-          console.log("🔐 Token received:", response.data.token);
-          console.log("📧 Email:", response.data.user.login_email);
-          let authUser = response.data.user;
-          setUser(authUser);
-          localStorage.setItem("authUser", JSON.stringify(authUser));
-          break;
-        default:
-          console.warn(`⚠️ Unexpected success status: ${response.status}`, response.data);
-          throw new Error(`Unexpected success status code: ${response.status}`);
+      if (response.status === 200) {
+        console.log("✅ Login successful");
+        const authUser = response.data.user;
+        setUser(authUser);
+        localStorage.setItem("authUser", JSON.stringify(authUser));
+        return response.data;
       }
-      return response.data
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
@@ -60,11 +53,15 @@ export const AuthProvider = ({ children }) => {
       } else {
         console.error("❌ Login request error:", error.message);
       }
-      return error.data;
+      return { message: "Login failed" };
     }
   };
 
-}
-
+  return (
+    <AuthContext.Provider value={{ user, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export default AuthContext;
