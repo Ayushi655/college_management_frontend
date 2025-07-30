@@ -57,8 +57,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ✅ ADD logout function
+  const logout = () => {
+    localStorage.removeItem("authUser");
+    setUser(null);
+    console.log("✅ Logged out");
+  };
+
+  // ✅ PASS logout along with user and login
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
