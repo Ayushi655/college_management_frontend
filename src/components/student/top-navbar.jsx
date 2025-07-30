@@ -26,7 +26,7 @@ function TopNavbar() {
           {/* Left: Logo */}
           <Navbar.Brand as={Link} to="/">
             <Image
-              src="/src/assets/logo.png"
+              src={logo}
               width="32"
               height="32"
               rounded
